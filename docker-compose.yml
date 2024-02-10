@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  statsd_exporter:
+    image: prom/statsd-exporter
+    ports:
+      - "9102:9102"
+      - "9125:9125/udp"
+    command:
+      - '--statsd.listen-udp=:9125'
+      - '--web.listen-address=:9102'
+
+  prometheus:
+    image: prom/prometheus:v2.20.1
+    volumes:
+      - ./docker/prometheus:/etc/prometheus
+    ports:
+      - 9090:9090
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    depends_on:
+      - statsd_exporter
+
+  grafana:
+    image: grafana/grafana:7.1.0
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  grafana_data:
+  prometheus_data:
