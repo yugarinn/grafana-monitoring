@@ -6,6 +6,7 @@ services:
     ports:
       - "9102:9102"
       - "9125:9125/udp"
+    restart: unless-stopped
     command:
       - '--statsd.listen-udp=:9125'
       - '--web.listen-address=:9102'
@@ -16,6 +17,7 @@ services:
       - ./docker/prometheus:/etc/prometheus
     ports:
       - 9090:9090
+    restart: unless-stopped
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -26,6 +28,7 @@ services:
     image: grafana/grafana:7.1.0
     ports:
       - 3000:3000
+    restart: unless-stopped
     depends_on:
       - prometheus
     volumes:
