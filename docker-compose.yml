@@ -15,6 +15,7 @@ services:
     image: prom/prometheus:v2.20.1
     volumes:
       - ./docker/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
     ports:
       - 9090:9090
     restart: unless-stopped
