@@ -40,7 +40,7 @@ services:
     ports:
       - 3000:3000
     restart: unless-stopped
-    enviroment:
+    environment:
       - GF_SERVER_ROOT_URL=${GF_SERVER_ROOT_URL}
     depends_on:
       - prometheus
